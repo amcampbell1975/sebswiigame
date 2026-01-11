@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #include <X11/Xlib.h>
 #include <unistd.h>   // for usleep
@@ -23,7 +24,8 @@ int WorldToPixelX(float x){  return ( x*SCALE) +200;}
 int WorldToPixelY(float y){  return (-y*SCALE) +400;}
 
 void Testing(void){
-	// Construct a world object, which will hold and simulate the rigid bodies.
+    srand(time(NULL));
+    // Construct a world object, which will hold and simulate the rigid bodies.
 	b2WorldDef worldDef = b2DefaultWorldDef();
 	worldDef.gravity = (b2Vec2){0.0f, -10.0f};
 	
@@ -85,11 +87,18 @@ void Testing(void){
             b2Rot rotation = b2Body_GetRotation(bodyIds[i]);
             //printf("%4.2f %4.2f %4.2f ", position.x, position.y, b2Rot_GetAngle(rotation));
 
-            draw_rotated_rect(display, window, gc,
-                WorldToPixelX(position.x), WorldToPixelY( position.y),
-                1*SCALE*2,  1*SCALE*2,
-                b2Rot_GetAngle(rotation));
+            if(b2Body_IsAwake(bodyIds[i]) || 1){
+                draw_rotated_rect(display, window, gc,
+                    WorldToPixelX(position.x), WorldToPixelY( position.y),
+                    1*SCALE*2,  1*SCALE*2,
+                    b2Rot_GetAngle(rotation));
+            }
     
+            if(j>200 && rand()%500==0 ){
+                b2Body_SetAngularVelocity(bodyIds[i],10.2);
+                //b2Body_EnableSleep (bodyIds[i], true);
+            }
+
         }
         //printf("\n");
         // draw_rotated_rect(display, window, gc,
