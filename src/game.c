@@ -87,7 +87,7 @@ void Testing(void){
             b2Rot rotation = b2Body_GetRotation(bodyIds[i]);
             //printf("%4.2f %4.2f %4.2f ", position.x, position.y, b2Rot_GetAngle(rotation));
 
-            if(b2Body_IsAwake(bodyIds[i]) || 1){
+            if(b2Body_IsEnabled(bodyIds[i])){
                 draw_rotated_rect(display, window, gc,
                     WorldToPixelX(position.x), WorldToPixelY( position.y),
                     1*SCALE*2,  1*SCALE*2,
@@ -98,6 +98,11 @@ void Testing(void){
                 b2Body_SetAngularVelocity(bodyIds[i],10.2);
                 //b2Body_EnableSleep (bodyIds[i], true);
             }
+
+            if(j>300 && rand()%500==0 ){
+                b2Body_Disable(bodyIds[i]);
+            }
+
 
         }
         //printf("\n");

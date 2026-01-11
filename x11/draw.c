@@ -1,10 +1,15 @@
 #include <X11/Xlib.h>
 #include <math.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "draw.h"
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 typedef struct {
     float x, y;
