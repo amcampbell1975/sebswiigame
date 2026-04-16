@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// comment
 
 // Minimal X11 code to open a window, draw text, and handle events.
 // Complete example based on {Link: xlib-example tutorials https://rtime.felk.cvut.cz/osp/prednasky/gui/_xlib-example/}
