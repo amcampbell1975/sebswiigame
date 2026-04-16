@@ -22,6 +22,13 @@ jobs:
       - name: Verify Build
         run: ls -l hello # Checking if the binary was created
 
+      - name: Upload Compiled Binary
+        uses: actions/upload-artifact@v4 # Recommended version
+        with:
+          name: x11-hello-world           # The name of the zip file to download
+          path: hello                     # The name of the executable you compiled
+          retention-days: 5               # Optional: how long to keep the file
+
 #      - name: Compile with GCC
 #        # run: gcc hello.c -o hello # The actual compilation step
 #        run: ./make.sh
