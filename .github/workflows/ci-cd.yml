@@ -1,37 +1,32 @@
-name: C Build Pipeline
+name: X11 Build and Release
 
-on: [push] # Trigger the pipeline every time you push code
+on:
+  push:
+    tags:
+      - "v*" # Runs only when you push a tag starting with 'v' (e.g., v1.0)
+
+permissions:
+  contents: write # Required to upload files to a Release
 
 jobs:
-  build:
-    runs-on: ubuntu-latest # Uses a free Linux virtual machine
-
+  build_and_release:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # Downloads your repo onto the runner
+        uses: actions/checkout@v4
 
       - name: Install X11 Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libx11-dev # Required for X11 headers
+          sudo apt-get install -y libx11-dev
 
-      - name: Compile with GCC
-        # IMPORTANT: -lX11 tells the compiler to link the X11 library
-        run: gcc hello.c -o hello -lX11 
+      - name: Compile
+        run: gcc hello.c -o hello_x11 -lX11
 
-      - name: Verify Build
-        run: ls -l hello # Checking if the binary was created
-
-      - name: Upload Compiled Binary
-        uses: actions/upload-artifact@v4 # Recommended version
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: x11-hello-world           # The name of the zip file to download
-          path: hello                     # The name of the executable you compiled
-          retention-days: 5               # Optional: how long to keep the file
-
-#      - name: Compile with GCC
-#        # run: gcc hello.c -o hello # The actual compilation step
-#        run: ./make.sh
-
-#      - name: Run the program
-#        run: ./hello # Executes the compiled file to verify it works
+          files: hello_x11 # The specific file to attach to the release
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
