@@ -10,9 +10,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4 # Downloads your repo onto the runner
 
-      - name: Compile with GCC
-        # run: gcc hello.c -o hello # The actual compilation step
-        run: ./make.sh
+      - name: Install X11 Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-dev # Required for X11 headers
 
-      - name: Run the program
-        run: ./hello # Executes the compiled file to verify it works
+      - name: Compile with GCC
+        # IMPORTANT: -lX11 tells the compiler to link the X11 library
+        run: gcc hello.c -o hello -lX11 
+
+      - name: Verify Build
+        run: ls -l hello # Checking if the binary was created
+
+#      - name: Compile with GCC
+#        # run: gcc hello.c -o hello # The actual compilation step
+#        run: ./make.sh
+
+#      - name: Run the program
+#        run: ./hello # Executes the compiled file to verify it works
