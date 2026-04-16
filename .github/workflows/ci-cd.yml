@@ -11,7 +11,8 @@ jobs:
         uses: actions/checkout@v4 # Downloads your repo onto the runner
 
       - name: Compile with GCC
-        run: gcc hello.c -o hello # The actual compilation step
+        # run: gcc hello.c -o hello # The actual compilation step
+        run: ./make.sh
 
       - name: Run the program
         run: ./hello # Executes the compiled file to verify it works
